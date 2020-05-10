@@ -50,9 +50,12 @@ const apiItens = fetch(urlApi)
 
             let cardTextMutedSmall = document.createElement("small");
             cardTextMutedSmall.setAttribute("class", "text-muted");
-            cardTextMutedSmall.innerHTML = "R$ " + room.price + ",00";
+
+            let cardTextMutedSmallStrong = document.createElement("strong");
+            cardTextMutedSmallStrong.innerHTML = "R$ " + room.price + ",00";
 
 
+            cardTextMutedSmall.appendChild(cardTextMutedSmallStrong);
             cardTextMuted.appendChild(cardTextMutedSmall);
 
             cardBody.appendChild(cardTitle);
@@ -110,5 +113,4 @@ $(document).ready(function() {
         }
     });
 });
-
-
+o);

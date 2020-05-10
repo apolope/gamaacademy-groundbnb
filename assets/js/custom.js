@@ -1,31 +1,20 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// jQuery
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var automaticGeoLocation = false;
-var resizeId;
+let automaticGeoLocation = false;
+let resizeId;
 
 $(document).ready(function($) {
     "use strict";
 
 //  Geo Location button
 
-    if( $(".geo-location").length > 0 && $(".map").length === 0 ){
-        $("body").append("<div id='map-helper' style='display: none'></div>");
-        var map = new google.maps.Map(document.getElementById("map-helper"));
-        autoComplete(map);
-    }
+    //if( $(".geo-location").length > 0 && $(".map").length === 0 ){
+    //    $("body").append("<div id='map-helper' style='display: none'></div>");
+    //    var map = new google.maps.Map(document.getElementById("map-helper"));
+    //    autoComplete(map);
+    //}
 
 //  Selectize
-
-    $("[data-enable-search=true]").each(function(){
-        $(this).selectize({
-            onDropdownOpen: dropdownOpen,
-            onDropdownClose: dropdownClose,
-            allowEmptyOption: false
-        });
-    });
-
-    var select = $("select");
+    //Criando selectize da categoria
+    let select = $("#categoria");
     select.selectize({
         onDropdownOpen: dropdownOpen,
         onDropdownClose: dropdownClose,
