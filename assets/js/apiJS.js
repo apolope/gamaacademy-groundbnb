@@ -122,4 +122,5 @@ for (let i = 0; i < parts.length; i++) {
     $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
 }
 
+
 alert($_GET.pag);    // 2
