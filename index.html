@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.css" type="text/css">
     <!-- Importação do CSS do Bootstrap -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" type="text/css">
+    <!-- Importação do CSS do Datatimepicker -->
+    <link rel="stylesheet" href="assets/css/bootstrap-datepicker3.min.css" type="text/css">
     <!-- Importação do CSS do Selectize -->
     <link rel="stylesheet" href="assets/css/selectize.css" type="text/css">
     <!-- Importação do CSS do Estilos customizado -->
@@ -286,33 +288,34 @@
                         <div class="main-search-form">
                             <div class="form-row">
 
-                                <div class="col-md-3 col-sm-3">
+                                <div class="col-md-3 col-sm-3 align-self-center">
                                     <div class="form-group">
-                                        <label for="categoria" class="col-form-label">Tipo?</label>
-                                        <select name="categoria" id="categoria" data-placeholder="Selecione a Categoria">
+                                        <!--<label for="categoria" class="col-form-label align-top">Tipo?</label>-->
+                                        Categoria:<select name="categoria" id="categoria" data-placeholder="Selecione a Categoria">
                                             <option value="">Selecione a Categoria</option>
                                         </select>
                                     </div>
                                     <!-- fim do form-group -->
                                 </div>
 
-                                <div class="col-md-3 col-sm-3">
+                                <div class="col-md-3 col-sm-3 align-self-center">
                                     <div class="form-group">
-                                        <label for="what" class="col-form-label">What?</label>
-                                        <input name="keyword" type="text" class="form-control" id="what" placeholder="What are you looking for?">
+                                        <!--<label for="quandoInicio" class="col-form-label align-top">Data</label>-->
+                                        De:<input name="keyword" type="text" class="form-control" id="quandoInicio" placeholder="Qual a data de inicio?">
+                                        Até:<input name="keyword" type="text" class="form-control" id="quandoFim" placeholder="Qual a data final?">
                                     </div>
                                     <!-- fim do form-group -->
                                 </div>
                                 <!-- fim do col-md-3 -->
-                                <div class="col-md-3 col-sm-3">
+                                <div class="col-md-3 col-sm-3 align-self-center">
                                     <div class="form-group">
-                                        <label for="input-location" class="col-form-label">Where?</label>
-                                        <input name="location" type="text" class="form-control" id="input-location" placeholder="Enter Location">
+                                        <!--<label for="input-location" class="col-form-label align-top">Where?</label>-->
+                                        Onde:<input name="location" type="text" class="form-control" id="input-location" placeholder="Enter Location">
                                         <span class="geo-location input-group-addon" data-toggle="tooltip" data-placement="top" title="Find My Position"><i class="fa fa-map-marker"></i></span>
                                     </div>
                                     <!-- fim do  form-group -->
                                 </div>
-                                <div class="col-md-3 col-sm-3">
+                                <div class="col-md-3 col-sm-3 align-self-center">
                                     <button type="submit" class="btn btn-primary width-100">Search</button>
                                 </div>
                                 <!-- fim do col-md-3 -->
@@ -387,6 +390,9 @@
     <script type="text/javascript" src="assets/js/popper.min.js"></script>
     <!-- Importação do JS do Bootstrap -->
 	<script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Importação do JS do Datatimerpick -->
+	<script type="text/javascript" src="assets/js/bootstrap-datepicker.min.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap-datepicker.pt-BR.min.js"></script>
     <!-- Importação da API do Gmaps -->
     <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script> -->
     <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
@@ -398,6 +404,8 @@
 	<script src="assets/js/icheck.min.js"></script>
     <!-- Importação do JS do Jquery Validate -->
 	<script src="assets/js/jquery.validate.min.js"></script>
+    <!-- Importação do JS do Moment -->
+	<script src="assets/js/moment.js"></script>
     <!-- Importação do JS customizado -->
 	<script src="assets/js/custom.js"></script>
     <!-- Importação do JS do motor da api -->
