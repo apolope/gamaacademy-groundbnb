@@ -363,9 +363,15 @@
                         </div>
                     <!-- Fim dos Itens -->
                     <br><br>
+                    <!-- Paginação -->
                     <div class="center">
-                        <a href="#" class="btn btn-primary btn-framed btn-rounded">Ver no Mapa</a>
+                        <a onclick="carregarAnt()" class="btn btn-primary btn-framed btn-rounded" id="botaoAnterior"> < </a>
+                        <div class="btn btn-secondary btn-rounded" id="pagAtual" disabled>  </div>
+                        <a onclick="carregarProx()" class="btn btn-primary btn-framed btn-rounded" id="botaoProximo"> > </a>
+                        <br>
+                        Controle de Paginação
                     </div>
+                    <!-- Fim da Paginação -->
                 </div>
                 <!-- fim do container -->
             </section>
