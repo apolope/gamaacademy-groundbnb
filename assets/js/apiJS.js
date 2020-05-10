@@ -14,7 +14,8 @@ let botAnt = document.querySelector("#botaoAnterior");
 let botProx = document.querySelector("#botaoProximo");
 //Elemento HTML do controle de Páginação
 let pagAatual = document.querySelector("#pagAtual");
-//Variavel de controle de diarias
+
+//Variaveis de controle de diarias
 let diarias = 0;
 let dataInicio = new Date();
 let dataFim = new Date();
