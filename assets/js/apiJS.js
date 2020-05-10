@@ -1,100 +1,3 @@
-//let apiItens = fetch(urlApi)
-//    .then((response) => {
-//        return response.json();
-//    })
-//    .then((data) => {
-//        //Controle de overflow, caso a páginação atinja um número maior que o tamanho da lista ou menor que 0
-//        if (paginacaoAtual * itensPaginacao > data.length) {
-//            paginacaoAtual = data.length % ItensPaginacao;
-//        }
-//        if (paginacaoAtual < 0) {
-//            paginacaoAtual = 0;
-//        }
-//
-//
-//        let inicioPag = paginacaoAtual * itensPaginacao;
-//        let fimPag = inicioPag + itensPaginacao > data.length ? data.length : inicioPag + itensPaginacao - 1;
-//
-//        //Limpando conteudo do carrossel de imagens
-//        //itensDoCarousel.innerHTML = "";
-//
-//        data.forEach((room, i) => {
-//
-//            if (i >= inicioPag && i <= fimPag) {
-//
-//                let carouselItem = document.createElement("div");
-//                carouselItem.classList.add("carousel-item", "col-md-4");
-//                i == 0 ? carouselItem.classList.add("active") : "";
-//
-//                let card = document.createElement("div");
-//                card.setAttribute("class", "card");
-//
-//                let cardImgTop = document.createElement("img");
-//                cardImgTop.classList.add("card-img-top", "img-fluid");
-//                cardImgTop.src = room.photo;
-//                cardImgTop.alt = room.name;
-//
-//                let cardBody = document.createElement("div");
-//                cardBody.setAttribute("class", "card-body");
-//
-//                let cardTitle = document.createElement("h4");
-//                cardTitle.setAttribute("class", "card-title");
-//                cardTitle.innerHTML = room.name;
-//
-//                let cardText = document.createElement("p");
-//                cardText.setAttribute("class", "card-text");
-//                cardText.innerHTML = room.property_type;
-//
-//                let exist = false;
-//
-//
-//                for (let i = 0; i < categorias.length; i++) {
-//                    if (categorias[i] == room.property_type) {
-//                        exist = true;
-//                    }
-//                }
-//                if (!exist) {
-//                    categorias.push(room.property_type);
-//                }
-//
-//
-//                let cardTextMuted = document.createElement("p");
-//                cardTextMuted.setAttribute("class", "card-text");
-//
-//                let cardTextMutedSmall = document.createElement("small");
-//                cardTextMutedSmall.setAttribute("class", "text-muted");
-//
-//                let cardTextMutedSmallStrong = document.createElement("strong");
-//                cardTextMutedSmallStrong.innerHTML = "R$ " + room.price + ",00";
-//
-//
-//                cardTextMutedSmall.appendChild(cardTextMutedSmallStrong);
-//                cardTextMuted.appendChild(cardTextMutedSmall);
-//
-//                cardBody.appendChild(cardTitle);
-//                cardBody.appendChild(cardText);
-//                cardBody.appendChild(cardTextMuted);
-//
-//                card.appendChild(cardImgTop);
-//                card.appendChild(cardBody);
-//                carouselItem.appendChild(card);
-//                itensDoCarousel.appendChild(carouselItem);
-//
-//            }
-//
-//        });
-//
-//        //Preencher os itens de categoria no select do selectize
-//        let category = $("select");
-//        let selectize0 = category[0].selectize;
-//        let selectize1 = category[0].selectize;
-//        for (let i = 0 ; i < categorias.length ; i++) {
-//            selectize0.addOption({value: i + 1, text: categorias[i]});
-//            selectize1.addOption({value: i + 1, text: categorias[i]});
-//        }
-//
-//    })
-
 //Criação do array de categorias
 let categorias = [];
 //Definição da URL da API
@@ -111,6 +14,10 @@ let botAnt = document.querySelector("#botaoAnterior");
 let botProx = document.querySelector("#botaoProximo");
 //Elemento HTML do controle de Páginação
 let pagAatual = document.querySelector("#pagAtual");
+//Variavel de controle de diarias
+let diarias = 0;
+let dataInicio = new Date();
+let dataFim = new Date();
 
 //Criando Variavel de Paginação $_GET.pag
 //LINK?pag=x onde x é o valor a ser recebido
@@ -200,7 +107,14 @@ function desenharCards() {
             let cardTextMutedSmall = document.createElement("small");
             cardTextMutedSmall.setAttribute("class", "text-muted");
             let cardTextMutedSmallStrong = document.createElement("strong");
-            cardTextMutedSmallStrong.innerHTML = "R$ " + resposta[i].price + ",00";
+
+            cardTextMutedSmallStrong.innerHTML =
+                diarias > 0 ?
+                        diarias == 1 ? "1 diaria R$ " + resposta[i].price + ",00" : diarias + " x diarias R$ " + resposta[i].price * diarias + ",00"
+                    : "R$ " + resposta[i].price + ",00";
+
+            console.log(diarias);
+
             cardTextMutedSmall.appendChild(cardTextMutedSmallStrong);
             cardTextMuted.appendChild(cardTextMutedSmall);
             cardBody.appendChild(cardTitle);
@@ -264,7 +178,47 @@ $(document).ready(function() {
             }
         }
     });
+
+    //Datepicker inicial
+    $("#quandoInicio").datepicker({
+        //Customizações Datepicker
+        autoclose: true,
+        language: "pt-BR",
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: true,
+        startDate: 'now',
+        toggleActive: true,
+        daysOfWeekHighlighted: "0,6",
+        //Evento de controle de mudança de data que interfere no datepicker de data final
+    }).on('changeDate', function (selected) {
+        let dataMinima = new Date(selected.date.valueOf());
+        dataMinima.setDate(dataMinima.getDate() + 1);
+        $('#quandoFim').datepicker('setStartDate', dataMinima);
+    });
+
+    //Datepicker final
+    $("#quandoFim").datepicker({
+        //Customizações Datepicker
+        language: "pt-BR",
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: true,
+        startDate: "+1d",
+        toggleActive: true,
+        daysOfWeekHighlighted: "0,6",
+        //Evento de controle de mudança de data que interfere no datepicker de data inicial
+    }).on('changeDate', function (selected) {
+        let dataMaxima = new Date(selected.date.valueOf());
+        $('#quandoInicio').datepicker('setEndDate', dataMaxima);
+
+        dataInicio = moment($("#quandoInicio").val(), "DD/MM/YYYY");
+        dataFim = moment($("#quandoFim").val(), "DD/MM/YYYY");
+
+        const diferencaTempo = Math.abs(dataFim.toDate() - dataInicio.toDate());
+        diarias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+
+        desenharCards();
+    });
 });
-
-
 
