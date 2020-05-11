@@ -2,6 +2,14 @@
 ![Thumbnail do Projeto](./assets/img/page-thumb.png)
 [Link do projeto](http://apolonioserafim.com.br/groundbnb/)
 
+### Recursos
+- **Paginação** Por padrão está definido 5 itens por vez, podendo ser alterado no arquivo https://github.com/apolope/groundbnb/blob/master/assets/js/apiJS.js#L6
+- **Alteração de Pagina** Ao clica em "<" ou ">" abaixo das imagens os itens são repaginados
+- **Categorização** Ao selecionar a categoria o conteudo é filtrado
+- **Seleção de data** Ao selecionar a data inicial e final, o valor da diaria é calculada gerando um total
+- **Localização** É possivel preencher a localização automaticamente ao clica no icone de "pin"
+- **Carrossel de Imagens** As imagens ficam passando automaticamente, também podendo ser passado manualmente
+
 No projeto foram utilizadas algumas bibliotecas
 
 | Biblioteca                | Tipo          | Para                                 | Versão | Status                         | Site
