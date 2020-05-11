@@ -70,6 +70,7 @@ const apiItens = fetch(urlApi)
 
 function desenharCards() {
 
+
     //Limpando conteudo do carrossel de imagens
     itensDoCarousel.innerHTML = "";
 
