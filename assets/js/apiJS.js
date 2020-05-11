@@ -111,7 +111,10 @@ function desenharCards(filtro, pagina) {
         if (pagina < 1) {                                                               //verifica se a paginação é menor que a quantidade minima
             pagina = Math.floor(parseInt(respostaFiltrada.length) / itensPaginacao); //se for vai para a posição final no sentido do loop
         }
-    }
+        if (pagina === 0) {
+            pagina = 1;
+        }
+        }
 
     //variaveis de controle da paginação
     let inicioPag = pagina * itensPaginacao - (itensPaginacao - 1);
@@ -164,10 +167,18 @@ function desenharCards(filtro, pagina) {
 }
 
 function carregarProx() {
-    desenharCards("",parseInt(pagAatual.innerHTML)+1);
+    if (opt.options[opt.selectedIndex].text === "Selecione a Categoria") {
+        desenharCards("",parseInt(pagAatual.innerHTML)+1);
+    } else {
+        desenharCards(opt.options[opt.selectedIndex].text,parseInt(pagAatual.innerHTML)+1);
+    }
 }
 function carregarAnt() {
-    desenharCards("",parseInt(pagAatual.innerHTML)-1);
+    if (opt.options[opt.selectedIndex].text === "Selecione a Categoria") {
+        desenharCards("",parseInt(pagAatual.innerHTML)-1);
+    } else {
+        desenharCards(opt.options[opt.selectedIndex].text,parseInt(pagAatual.innerHTML)-1);
+    }
 }
 
 function paginar(pagina) {
