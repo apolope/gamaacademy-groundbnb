@@ -14,6 +14,8 @@ let botAnt = document.querySelector("#botaoAnterior");
 let botProx = document.querySelector("#botaoProximo");
 //Elemento HTML do controle de Páginação
 let pagAatual = document.querySelector("#pagAtual");
+//Elemento HTML do controle de Opções
+let opt = document.querySelector("#categoria");
 
 //
 let GOOGLE_MAP_KEY = "&callback=initMap";
@@ -64,71 +66,6 @@ const apiItens = fetch(urlApi)
                 categorias.push(local.property_type);
             }
         });
-        desenharCards();
-    });
-
-
-function desenharCards() {
-
-
-    //Limpando conteudo do carrossel de imagens
-    itensDoCarousel.innerHTML = "";
-
-    //Controle de overflow, caso a páginação atinja um número maior que o tamanho da lista ou menor que 1
-    if (paginacaoAtual * itensPaginacao > resposta.length) {
-        paginacaoAtual = 1;
-    }
-    if (paginacaoAtual < 1) {
-        paginacaoAtual = Math.floor(parseInt(resposta.length) / itensPaginacao);
-    }
-
-    let inicioPag = paginacaoAtual * itensPaginacao - 4;
-    let fimPag = inicioPag + itensPaginacao > resposta.length ? resposta.length - 1 : Math.floor(parseInt(resposta.length) / itensPaginacao) * paginacaoAtual;
-
-    for (let i = 1 ; i < resposta.length ; i++) {
-
-        if (i >= inicioPag && i <= fimPag) {
-
-            let carouselItem = document.createElement("div");
-            carouselItem.classList.add("carousel-item", "col-md-4");
-            i == inicioPag ? carouselItem.classList.add("active") : "";
-            let card = document.createElement("div");
-            card.setAttribute("class", "card");
-            let cardImgTop = document.createElement("img");
-            cardImgTop.classList.add("card-img-top", "img-fluid");
-            cardImgTop.src = resposta[i].photo;
-            cardImgTop.alt = resposta[i].name;
-            let cardBody = document.createElement("div");
-            cardBody.setAttribute("class", "card-body");
-            let cardTitle = document.createElement("h4");
-            cardTitle.setAttribute("class", "card-title");
-            cardTitle.innerHTML = resposta[i].name;
-            let cardText = document.createElement("p");
-            cardText.setAttribute("class", "card-text");
-            cardText.innerHTML = resposta[i].property_type;
-
-            let cardTextMuted = document.createElement("p");
-            cardTextMuted.setAttribute("class", "card-text");
-            let cardTextMutedSmall = document.createElement("small");
-            cardTextMutedSmall.setAttribute("class", "text-muted");
-            let cardTextMutedSmallStrong = document.createElement("strong");
-
-            cardTextMutedSmallStrong.innerHTML =
-                diarias > 0 ?
-                        diarias == 1 ? "1 diaria R$ " + resposta[i].price + ",00" : diarias + " x diarias R$ " + resposta[i].price * diarias + ",00"
-                    : "R$ " + resposta[i].price + ",00";
-
-            cardTextMutedSmall.appendChild(cardTextMutedSmallStrong);
-            cardTextMuted.appendChild(cardTextMutedSmall);
-            cardBody.appendChild(cardTitle);
-            cardBody.appendChild(cardText);
-            cardBody.appendChild(cardTextMuted);
-            card.appendChild(cardImgTop);
-            card.appendChild(cardBody);
-            carouselItem.appendChild(card);
-            itensDoCarousel.appendChild(carouselItem);
-        }
-        paginar();
         //Preencher os itens de categoria no select do selectize
         let category = $("select");
         let selectize0 = category[0].selectize;
@@ -137,22 +74,114 @@ function desenharCards() {
             selectize0.addOption({value: i + 1, text: categorias[i]});
             selectize1.addOption({value: i + 1, text: categorias[i]});
         }
+        desenharCards();
+    });
+
+
+function desenharCards(filtro, pagina) {
+
+    //variaveis de controle para filtro e paginação
+    let respostaFiltrada = [{}];
+    let ri = 1;
+
+    //Limpando conteudo do carrossel de imagens
+    itensDoCarousel.innerHTML = "";
+
+    //busca a variavel retornada pelo fetch e aplica o filtro e controles de paginação
+    for(let i = 1 ; i < resposta.length ; i++){                 //Varre todas as entrada do fetch
+        if (typeof filtro !== "undefined" && filtro !== "") {   //verifica se houve algum filtro aplicado
+            if (filtro === resposta[i].property_type) {         //testa se o filtro aplicado coincide com o valor da variavel
+                respostaFiltrada[ri] = resposta[i];             //insere o item atual aos itens filtrados
+                ri++;                                           //variavel de conrole do filtro
+            }
+        } else {
+            respostaFiltrada[ri] = resposta[i];                 //se nõa há filtro prrenche com todos itens
+            ri++;
+        }
+        ;
+    }
+
+    if (typeof pagina === "undefined") {                                                //verifica se há paginação definida
+        pagina = 1;                                                                     //se não houver define 1
+    } else {
+        //Controle de overflow
+        if (pagina * itensPaginacao - (itensPaginacao - 1) > respostaFiltrada.length) { //verifica se a paginação é maior que a qtd de itens
+            pagina = 1;                                                                 //se for reseta a paginação no sentido do loop
+        }
+        if (pagina < 1) {                                                               //verifica se a paginação é menor que a quantidade minima
+            pagina = Math.floor(parseInt(respostaFiltrada.length) / itensPaginacao); //se for vai para a posição final no sentido do loop
+        }
+    }
+
+    //variaveis de controle da paginação
+    let inicioPag = pagina * itensPaginacao - (itensPaginacao - 1);
+
+    let fimPag = inicioPag + itensPaginacao > respostaFiltrada.length ? respostaFiltrada.length - 1 : Math.floor(parseInt(respostaFiltrada.length) / itensPaginacao) * pagina;
+
+    //cria os objetos com ou sem filtro paginados
+    for (let i = inicioPag ; i <= fimPag ; i++) {
+        let carouselItem = document.createElement("div");
+        carouselItem.classList.add("carousel-item", "col-md-4");
+        i == inicioPag ? carouselItem.classList.add("active") : "";
+        let card = document.createElement("div");
+        card.setAttribute("class", "card");
+        let cardImgTop = document.createElement("img");
+        cardImgTop.classList.add("card-img-top", "img-fluid");
+        cardImgTop.src = respostaFiltrada[i].photo;
+        cardImgTop.alt = respostaFiltrada[i].name;
+        let cardBody = document.createElement("div");
+        cardBody.setAttribute("class", "card-body");
+        let cardTitle = document.createElement("h4");
+        cardTitle.setAttribute("class", "card-title");
+        cardTitle.innerHTML = respostaFiltrada[i].name;
+        let cardText = document.createElement("p");
+        cardText.setAttribute("class", "card-text");
+        cardText.innerHTML = respostaFiltrada[i].property_type;
+
+        let cardTextMuted = document.createElement("p");
+        cardTextMuted.setAttribute("class", "card-text");
+        let cardTextMutedSmall = document.createElement("small");
+        cardTextMutedSmall.setAttribute("class", "text-muted");
+        let cardTextMutedSmallStrong = document.createElement("strong");
+
+        cardTextMutedSmallStrong.innerHTML =
+            diarias > 0 ?
+                diarias == 1 ? "1 diaria R$ " + respostaFiltrada[i].price + ",00" : diarias + " x diarias R$ " + respostaFiltrada[i].price * diarias + ",00"
+                : "R$ " + resposta[i].price + ",00";
+
+        cardTextMutedSmall.appendChild(cardTextMutedSmallStrong);
+        cardTextMuted.appendChild(cardTextMutedSmall);
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(cardText);
+        cardBody.appendChild(cardTextMuted);
+        card.appendChild(cardImgTop);
+        card.appendChild(cardBody);
+        carouselItem.appendChild(card);
+        itensDoCarousel.appendChild(carouselItem);
+
+        paginar(pagina);
     }
 }
 
 function carregarProx() {
-    paginacaoAtual++;
-    desenharCards();
+    desenharCards("",parseInt(pagAatual.innerHTML)+1);
 }
 function carregarAnt() {
-    paginacaoAtual--;
-    desenharCards();
+    desenharCards("",parseInt(pagAatual.innerHTML)-1);
 }
 
-function paginar() {
+function paginar(pagina) {
     botAnt.innerHTML = `< -${itensPaginacao}`;
     botProx.innerHTML = `+${itensPaginacao} >`;
-    pagAatual.innerHTML = paginacaoAtual;
+    pagAatual.innerHTML = pagina;
+}
+
+function filtrarEntradas() {
+    if (opt.options[opt.selectedIndex].text === "Selecione a Categoria") {
+        desenharCards();
+    } else {
+        desenharCards(opt.options[opt.selectedIndex].text);
+    }
 }
 
 $(document).ready(function() {
@@ -221,7 +250,11 @@ $(document).ready(function() {
         const diferencaTempo = Math.abs(dataFim.toDate() - dataInicio.toDate());
         diarias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
 
-        desenharCards();
+        if (opt.options[opt.selectedIndex].text === "Selecione a Categoria") {
+            desenharCards();
+        } else {
+            desenharCards(opt.options[opt.selectedIndex].text);
+        }
     });
 });
 
