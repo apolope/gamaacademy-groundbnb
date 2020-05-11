@@ -15,6 +15,9 @@ let botProx = document.querySelector("#botaoProximo");
 //Elemento HTML do controle de Páginação
 let pagAatual = document.querySelector("#pagAtual");
 
+//
+let GOOGLE_MAP_KEY = "&callback=initMap";
+
 //Variaveis de controle de diarias
 let diarias = 0;
 let dataInicio = new Date();
@@ -113,8 +116,6 @@ function desenharCards() {
                 diarias > 0 ?
                         diarias == 1 ? "1 diaria R$ " + resposta[i].price + ",00" : diarias + " x diarias R$ " + resposta[i].price * diarias + ",00"
                     : "R$ " + resposta[i].price + ",00";
-
-            console.log(diarias);
 
             cardTextMutedSmall.appendChild(cardTextMutedSmallStrong);
             cardTextMuted.appendChild(cardTextMutedSmall);
@@ -223,3 +224,22 @@ $(document).ready(function() {
     });
 });
 
+
+
+
+
+
+function preencherLocalizacao(){
+    document.querySelector("#inputLocation").value = "Carregando!";
+
+    $.ajax('http://ip-api.com/json')
+        .then(
+            function success(response) {
+                document.querySelector("#inputLocation").value  = response.city + ", " + response.regionName + ", " + response.country;
+            },
+
+            function fail(data, status) {
+                document.querySelector("#inputLocation").value  = "Infelizmente não foi possível";
+            }
+        );
+}
